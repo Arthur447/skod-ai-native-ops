@@ -1,0 +1,169 @@
+# AI-Native Enforcement Workflow
+#
+# Runs on every PR (and on push to master + feat/ai-native-operations for
+# baseline metrics). Enforces three invariants that together guarantee the
+# "guidelines live in the CI, not in a wiki" promise of HOW-WE-OPERATE.md:
+#
+#   1. architecture-linting — dep-cruiser boundary rules on commu_inbox JS.
+#      PR fails if a rule with severity=error is violated (circular deps,
+#      hooks-imported-from-outside-components, entry-points-imported, etc.).
+#
+#   2. duplication-check — jscpd cross-module duplication scan on
+#      web/modules/custom/**. PR fails if the global duplication rate
+#      exceeds the threshold (currently 7%, will drop to 5% after SKD-3001
+#      extracts the Stripe shared utility).
+#
+#   3. python-tests — pytest on services/skod-agent-service. PR fails if any
+#      test fails or import errors surface.
+#
+# Each job gracefully no-ops on branches that do not yet contain its
+# target (e.g. python-tests on a branch without services/skod-agent-service)
+# so the workflow can roll out incrementally across branches.
+#
+# Reports are uploaded as GitHub artifacts (30-day retention) for forensic
+# review when a job fails.
+#
+# References:
+#   - docs/HOW-WE-OPERATE.md (guidelines-in-CI principle)
+#   - docs/ROADMAP-ai-native-organization.md P1 (this workflow is the artefact)
+#   - rnd/ai-native-tooling/dep-cruiser.config.cjs (architecture rules)
+#   - rnd/ai-native-tooling/jscpd.config.json (duplication threshold)
+
+name: AI-Native Enforcement
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+      - 'feat/ai-native-operations'
+  workflow_dispatch:
+
+concurrency:
+  group: ai-native-enforcement-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+
+  # ────────────────────────────────────────────────────────────
+  # Job 1 — Architecture boundary rules (dep-cruiser)
+  # ────────────────────────────────────────────────────────────
+  architecture-linting:
+    name: Architecture — dep-cruiser boundaries
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Check dep-cruiser config is present on this branch
+        id: check
+        run: |
+          if [ -f rnd/ai-native-tooling/dep-cruiser.config.cjs ]; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::dep-cruiser config not yet on this branch — skipping."
+          fi
+
+      - name: Run dep-cruiser on commu_inbox JS
+        if: steps.check.outputs.exists == 'true'
+        run: |
+          npx --yes dependency-cruiser@latest \
+            --config rnd/ai-native-tooling/dep-cruiser.config.cjs \
+            --output-type err \
+            web/modules/custom/commu_inbox/js/src
+
+      - name: Generate JSON report for artifact
+        if: always() && steps.check.outputs.exists == 'true'
+        run: |
+          npx --yes dependency-cruiser@latest \
+            --config rnd/ai-native-tooling/dep-cruiser.config.cjs \
+            --output-type json \
+            web/modules/custom/commu_inbox/js/src \
+            > dep-cruiser-report.json || true
+
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.check.outputs.exists == 'true'
+        with:
+          name: dep-cruiser-report
+          path: dep-cruiser-report.json
+          retention-days: 30
+
+  # ────────────────────────────────────────────────────────────
+  # Job 2 — Duplication check (jscpd, cross-module)
+  # ────────────────────────────────────────────────────────────
+  duplication-check:
+    name: Duplication — jscpd
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Check jscpd config is present on this branch
+        id: check
+        run: |
+          if [ -f rnd/ai-native-tooling/jscpd.config.json ]; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::jscpd config not yet on this branch — skipping."
+          fi
+
+      - name: Run jscpd on custom modules
+        if: steps.check.outputs.exists == 'true'
+        run: |
+          npx --yes jscpd \
+            --config rnd/ai-native-tooling/jscpd.config.json \
+            web/modules/custom/
+
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.check.outputs.exists == 'true'
+        with:
+          name: jscpd-report
+          path: rnd/ai-native-tooling/reports/jscpd/
+          retention-days: 30
+          if-no-files-found: ignore
+
+  # ────────────────────────────────────────────────────────────
+  # Job 3 — Python tests (skod-agent-service)
+  # ────────────────────────────────────────────────────────────
+  python-tests:
+    name: Python — pytest skod-agent-service
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check skod-agent-service is present on this branch
+        id: check
+        run: |
+          if [ -d services/skod-agent-service ] && [ -f services/skod-agent-service/requirements.txt ]; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::skod-agent-service not yet on this branch — skipping."
+          fi
+
+      - uses: actions/setup-python@v5
+        if: steps.check.outputs.exists == 'true'
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+          cache-dependency-path: 'services/skod-agent-service/requirements.txt'
+
+      - name: Install dependencies
+        if: steps.check.outputs.exists == 'true'
+        working-directory: services/skod-agent-service
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt pytest
+
+      - name: Run pytest
+        if: steps.check.outputs.exists == 'true'
+        working-directory: services/skod-agent-service
+        run: pytest tests/ -v --tb=short
