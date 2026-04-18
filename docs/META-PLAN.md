@@ -11,7 +11,7 @@
 | Level | Question it answers | Artefact | Status |
 |---|---|---|---|
 | **1. Vision** | Why does Skod exist? What does success look like at 3 years? | [`docs/VISION.md`](VISION.md) | ✅ Drafted (session 8, 2026-04-18) |
-| **2. Strategy** | How do we get there? AI-native why? Business model? | `docs/STRATEGY.md` | ❌ Missing (session 9 target) |
+| **2. Strategy** | How do we get there? AI-native why? Business model? | [`docs/STRATEGY.md`](STRATEGY.md) | ✅ Drafted (session 9, 2026-04-18) |
 | **3. Operating Model** | How do we run day-to-day? Roles, gates, principles | [`docs/HOW-WE-OPERATE.md`](HOW-WE-OPERATE.md) | ✅ Drafted |
 | **4. Architecture** | What technical system carries the operating model? | [`docs/architecture/ai-native-operations.md`](architecture/ai-native-operations.md) + [`docs/adr/`](adr/) | ✅ Drafted (ADRs 0001, 0006, 0007) |
 | **5. Roadmap** | In what order do we execute? | [`docs/ROADMAP-ai-native-organization.md`](ROADMAP-ai-native-organization.md) | ✅ Drafted (P1–P14) |
@@ -41,7 +41,7 @@ rewrite, a coherence pass.
 | **2026-04-17** | 6.5 | Strategic shift acted: Skod repositioned as a 360° AI-native organization asset, not only an interview-prep artefact. ADRs 0006 and 0007 drafted. Roadmap extended with P9–P14. | `b42d2c01`, `8bb4d16e`, `7611fba9` |
 | **2026-04-18** | 7 (this commit) | META-PLAN tracker created. Top-down cascade formalized. Levels 1 and 2 identified as next priorities. | (this commit) |
 | **2026-04-18** | 8 | Vision drafted via 6-question dialogue. Core positioning crystallized as *"the Calendly for paid email responses"*. Scale ambition declared: 1,000 active pros, ~€15k MRR at 3 years, capital-efficient micro-SaaS. Exclusions fixed: not a marketplace, not a Gmail replacement, not video/calls (legacy types to be cleaned), not B2C generic, France-first, not a content platform. Target: [`docs/VISION.md`](VISION.md) shipped. | (this commit) |
-| **2026-04-??** | 9 — upcoming | Strategy drafting. Target: `docs/STRATEGY.md`. | pending |
+| **2026-04-18** | 9 | Strategy session complete (6/6 questions). C-primary + Build-first moat. Hedge structure elegant (all scenarios lead to professional win). Investment: full-time, ~€500/month, success signal 5 users @ 6m. Feedback: monthly copil (automation created), Claude as sparring partner, metrics deferred to P6. Risks: R3 (visibility) real and acknowledged with 3-month trigger; R1/R2/R4 low; R5 mitigated by cleanup chantier. Triggered public-repo creation ([github.com/Arthur447/skod-ai-native-ops](https://github.com/Arthur447/skod-ai-native-ops)) + monthly-review GitHub Action workflow. | multiple on `feat/ai-native-operations` + public repo |
 | **2026-04-??** | 10 — upcoming | Cascade trace-up audit. Read roadmap + ADRs against Vision/Strategy; adjust where needed. | pending |
 
 ## Update protocol

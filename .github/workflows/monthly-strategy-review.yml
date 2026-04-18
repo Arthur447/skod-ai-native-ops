@@ -1,0 +1,65 @@
+# Monthly Strategy Review
+#
+# Opens a GitHub Issue on the 1st of each month summarising what
+# changed in the operating model and proposing updates to apply.
+#
+# If the repository has an ANTHROPIC_API_KEY secret, the Issue body
+# is drafted by Claude from the current META-PLAN.md, STRATEGY.md,
+# VISION.md and the commits of the last 30 days.
+#
+# If the secret is not set, a static checklist template is used
+# instead so the monthly reminder still lands — the workflow never
+# fails because the secret is missing.
+#
+# The review pattern is part of the AI-native operating model: the
+# system reviews itself on a cadence, a human validates and applies.
+# See docs/STRATEGY.md → "Feedback loop".
+
+name: Monthly Strategy Review
+
+on:
+  schedule:
+    # 9:00 UTC on the 1st day of every month.
+    - cron: "0 9 1 * *"
+  workflow_dispatch:
+    # Manual trigger for ad-hoc reviews (e.g. after a strategic event).
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  draft-review:
+    name: Draft and open the monthly review
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (full history for git log)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Generate review draft
+        id: draft
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_MODEL: claude-sonnet-4-6
+        run: |
+          python .github/scripts/monthly-strategy-review.py > draft.md
+          echo "---"
+          head -30 draft.md
+          echo "---"
+
+      - name: Open review Issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          MONTH=$(date -u +"%B %Y")
+          gh issue create \
+            --title "Strategy review — ${MONTH}" \
+            --body-file draft.md \
+            --label "strategy,monthly-review"
