@@ -1,0 +1,5 @@
+
+  warn no-orphans: web/modules/custom/commu_inbox/js/src/profile-send-message.js
+
+x 1 dependency violations (0 errors, 1 warnings). 17 modules, 17 dependencies cruised.
+

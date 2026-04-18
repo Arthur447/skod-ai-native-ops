@@ -1,0 +1,25 @@
+{
+  "name": "skod-consultations-mcp",
+  "version": "0.1.0",
+  "description": "MCP server exposing Skod consultations (read-only) to LLM-driven IDEs like Claude Code. Bounded context: commu_consultation_order.",
+  "type": "module",
+  "bin": {
+    "skod-consultations-mcp": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.20.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.6.3"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

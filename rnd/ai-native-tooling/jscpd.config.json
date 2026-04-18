@@ -1,0 +1,21 @@
+{
+  "$schema": "https://raw.githubusercontent.com/kucherenko/jscpd/master/packages/jscpd/schemas/jscpd.json",
+  "_note_threshold": "Temporarily at 7%. Current baseline on master is 5.79% (mostly Stripe-logic triplication across commu_abonnement/commu_licenses/commu_commerce and Twig form duplication between commu_abonnement and commu_offer). Follow-up ticket SKD-3001 will bring duplication back below 5% via shared-utility extraction, then this threshold drops to 5.",
+  "threshold": 7,
+  "reporters": ["console", "json"],
+  "output": "rnd/ai-native-tooling/reports/jscpd",
+  "format": ["php", "javascript", "jsx", "twig"],
+  "minLines": 8,
+  "minTokens": 50,
+  "ignore": [
+    "**/node_modules/**",
+    "**/vendor/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/*.min.js",
+    "**/tests/**",
+    "**/*.test.js"
+  ],
+  "absolute": false,
+  "gitignore": true
+}

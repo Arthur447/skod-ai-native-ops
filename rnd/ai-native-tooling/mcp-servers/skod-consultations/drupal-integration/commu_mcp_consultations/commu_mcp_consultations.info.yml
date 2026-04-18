@@ -1,0 +1,9 @@
+name: 'Commu MCP — Consultations'
+type: module
+description: 'Custom drush commands exposing read-only consultation data for the skod-consultations MCP server. Bounded context: commu_consultation_order + commu_marktplace.'
+core_version_requirement: ^10
+package: 'Commu — R&D'
+dependencies:
+  - drupal:core
+  - commu_consultation_order:commu_consultation_order
+  - domain:domain

@@ -1,0 +1,8 @@
+services:
+  commu_mcp_consultations.commands:
+    class: Drupal\commu_mcp_consultations\Commands\ConsultationMcpCommands
+    arguments:
+      - '@entity_type.manager'
+      - '@commu_marketplace.da'
+    tags:
+      - { name: drush.command }
