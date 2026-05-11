@@ -1,89 +1,117 @@
-# Skod — AI-Native Operating Model
+# Skod V2 — AI-native Engineering Transformation Lab
 
-This is the **public operating layer** of [Skod](https://skod.fr), a
-micro-SaaS I build and run as a solo founder. The product code lives
-in a private monorepo; this repo is the engineering organization that
-makes it possible — architecture, decisions, workflows, roadmap, and
-the tooling I use to operate the company with supervised AI agents.
+> Public operating layer of a real modernization program: how a legacy
+> Drupal product is being reshaped into a modular, observable,
+> AI-assisted delivery system under human governance.
 
-## What Skod is
+This repository is not positioned as a low-level AI tooling demo. It is
+a recruiter-facing transformation lab showing how senior engineering
+leadership can use AI to improve delivery throughput while keeping
+architecture, risk, and product accountability under human control.
 
-> Skod is the Calendly for paid email responses.
+## What This Is
 
-Put a Skod link in your LinkedIn / Twitter / email signature /
-linktree. Anyone clicks it, pays the price you configured, and sends
-you a message. You reply from your normal Gmail or Outlook inbox —
-no new platform to learn. Skod handles payment capture, SLA
-enforcement (refund on timeout), and reply detection.
+Skod V2 is the modernization track for an existing Skod product. The
+public repo documents the operating model, engineering governance, and
+architecture patterns used in the transformation:
 
-Full details in [`docs/VISION.md`](docs/VISION.md).
+- AI-native delivery governance: GitHub issues, scoped prompts, small
+  PRs, CI gates, review discipline, and learning loops.
+- Engineering transformation: moving from a Drupal legacy context to a
+  TypeScript / Next.js modular monolith.
+- Platform modernization: explicit module boundaries, typed contracts,
+  outbox-first asynchronous work, worker transport, observability, and
+  provider boundaries.
+- Human-in-the-loop control: AI accelerates execution, but humans own
+  architecture, acceptance criteria, review decisions, and risk.
+- Delivery predictability: Definition of Done, ADRs, runbooks,
+  risk register, parity audit, and measurable delivery feedback.
 
-## Start here (15 min read)
+Arthur Collenot uses Skod V2 as a real-world lab for CTO, Technical
+Program, and Transformation Lead work: operating model design,
+modernization sequencing, AI-assisted delivery operations, and
+governance that can scale beyond one maintainer.
 
-If you are a recruiter, a potential collaborator, or just curious
-about how a solo founder simulates a 10-engineer team with agents,
-read in this order:
+## Start Here
 
-1. [`docs/META-PLAN.md`](docs/META-PLAN.md) — the 7-level vision
-   cascade and where each artefact sits in it (entry point).
-2. [`docs/VISION.md`](docs/VISION.md) — what Skod is at 3 years,
-   what it is **not**, the target user archetypes.
-3. [`docs/HOW-WE-OPERATE.md`](docs/HOW-WE-OPERATE.md) — operating
-   principles (bounded contexts, Human-in-the-Loop on irreversible
-   actions, guidelines-in-CI-not-in-wiki).
-4. [`docs/architecture/ai-native-operations.md`](docs/architecture/ai-native-operations.md) —
-   system architecture with a Mermaid diagram covering the
-   engineering workflow AND the product-facing agents.
-5. [`docs/adr/`](docs/adr/) — three Architecture Decision Records
-   (LP Optimizer pipeline, 360° AI-native principles, Landing Page
-   Manager architecture).
-6. [`docs/ROADMAP-ai-native-organization.md`](docs/ROADMAP-ai-native-organization.md) —
-   14 priorities sequenced across engineering and non-engineering.
-7. [`docs/backlog/skd-1003-execution-log.md`](docs/backlog/skd-1003-execution-log.md) —
-   one ticket executed end-to-end through the AI-native workflow
-   (planner agent → human validation → coder agent → reviewer agent
-   → merge). The git log itself IS the demonstration.
+| Path | Why it matters |
+|---|---|
+| [Executive summary](docs/00-executive-summary.md) | Three-minute overview for recruiters, CTOs, CPTOs, and transformation leads. |
+| [Recruiter demo guide](docs/06-recruiter-demo-guide.md) | Five-minute and fifteen-minute reading paths by target role. |
+| [V1 to V2 modernization case study](docs/case-studies/skod-v1-to-v2-modernization.md) | Legacy-to-modern platform patterns and leadership takeaways. |
+| [AI-assisted delivery loop case study](docs/case-studies/ai-assisted-delivery-loop.md) | How AI work is scoped, gated, reviewed, and converted into learning. |
+| [Architecture docs](docs/architecture/README.md) | Current platform shape, request flow, module map, durable jobs, and related diagrams. |
+| [Runbooks](docs/runbooks/README.md) | Operational discipline for onboarding, release, observability, workers, and AI productivity. |
+| [ADRs](docs/adr/README.md) | Repository-scoped architecture decisions and governance records. |
 
-## Companion tooling
+## Operating Model
 
-- [`rnd/ai-native-tooling/`](rnd/ai-native-tooling/) — R&D tooling:
-  dep-cruiser boundary rules, jscpd cross-module duplication
-  detection, and a standalone TypeScript MCP server that exposes
-  Skod state to Claude Code for development velocity.
-- [`.github/workflows/ai-native-enforcement.yml`](.github/workflows/ai-native-enforcement.yml) —
-  the CI workflow that enforces boundary rules + duplication
-  threshold + Python service tests on every PR of the private
-  monorepo. Included here as a reference pattern; it does not run
-  operationally on this repo because the target paths live in the
-  private codebase.
+The operating model is deliberately conservative:
 
-## Why this repo exists
+1. GitHub issue defines scope and acceptance criteria.
+2. AI assistant receives a bounded task with relevant repo context.
+3. Work lands in a small PR.
+4. CI validates build, lint, type checks, and tests.
+5. Human review owns architecture, product judgment, and merge
+   readiness.
+6. AI productivity notes capture what accelerated delivery and what
+   created rework.
+7. Repeated corrections become durable assets: tests, runbooks, ADRs,
+   prompts, or boundary rules.
 
-Most public engineering artefacts from solo founders are either demos
-(Cursor / Claude Code screenshots, one-off experiments) or thought
-pieces (blog posts about theory). This repo is the **working
-artefact** — the living documents maintained as Skod evolves.
+The point is not that AI replaces a team. The point is that AI can
+augment execution inside a disciplined delivery system where humans
+retain accountability.
 
-Each artefact is updated as I learn: the roadmap's progress log, the
-META-PLAN's session log, the ADRs' follow-ups. A reviewer opening
-this repo in six months will see how the organization has evolved,
-not a snapshot.
+## Modernization Themes Demonstrated
 
-The goal: demonstrate, in git, what AI-native engineering leadership
-looks like at solo-founder scale — before and regardless of whether
-I take that role at scale for someone else's organization.
+- **Modular monolith direction**: bounded contexts and public module
+  APIs before distributed-system complexity.
+- **CI build gate**: mechanical quality checks before human review.
+- **Outbox-first architecture**: durable async handoff rather than
+  fragile side effects inside request flows.
+- **BullMQ worker transport**: background processing as an explicit
+  operational concern.
+- **Observability**: `/api/metrics`, runbooks, and delivery signals
+  make the system inspectable.
+- **Provider boundaries**: email, payment, and auth providers are kept
+  behind module contracts.
+- **Inbound reply migration**: EmailConnect-style inbound mail handling
+  is treated as a platform capability, not a scattered integration.
 
-## What this repo does NOT contain
+## What Is Public
 
-- The Skod product code (Drupal monorepo + Python agent service)
-- Business-confidential information (customer data, internal pricing
-  experiments, unreleased marketing material)
-- Any financial, customer, or regulated data
+This repo is safe-to-share documentation and operating material:
 
-Those live in a separate private monorepo. This repo is maintained
-as a public-safe synchronization of the operating-model folders only.
+- architecture notes and ADRs;
+- runbooks and onboarding guides;
+- modernization case studies;
+- delivery governance patterns;
+- public summaries of AI-assisted engineering practice.
 
-## About
+## What Is Intentionally Not Public
 
-Arthur Collenot — building Skod, and this operating model, in public.
-Reach me at arthur447@gmail.com.
+The public lab does not include:
+
+- confidential product source code;
+- secrets, credentials, tokens, or environment values;
+- customer data;
+- internal pricing experiments;
+- private business details;
+- raw prompts or low-level Codex logs;
+- vendor-specific operational details that would increase security
+  risk.
+
+## About Arthur Collenot
+
+Arthur Collenot is a CTO / Technical Program / Transformation Lead
+profile with 18 years of product, engineering, and delivery experience.
+This repository is a portfolio-grade evidence trail for modernization
+leadership: making technical direction explicit, turning AI into a
+controlled delivery accelerator, and building governance that improves
+predictability instead of hiding risk.
+
+## License
+
+No license is currently granted for reuse of the repository contents
+unless stated otherwise in a future license file.
