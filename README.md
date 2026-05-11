@@ -8,6 +8,7 @@ This repository is not positioned as a low-level AI tooling demo. It is
 a recruiter-facing transformation lab showing how senior engineering
 leadership can use AI to improve delivery throughput while keeping
 architecture, risk, and product accountability under human control.
+It contains public-safe summaries of private implementation work.
 
 ## What This Is
 

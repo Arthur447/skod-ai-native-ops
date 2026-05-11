@@ -59,7 +59,8 @@ For technical leadership review:
 2. [ADR index](adr/README.md)
 3. [AI team productivity loop](runbooks/ai-team-productivity-loop.md)
 4. [Observability runbook](runbooks/observability.md)
-5. [Risk register](runbooks/risk-register.md)
+5. Risk register: private implementation detail, summarized in this
+   public operating layer.
 
 ## What Is Intentionally Not Public
 

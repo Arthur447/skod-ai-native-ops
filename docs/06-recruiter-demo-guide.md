@@ -34,9 +34,11 @@ Recommended files:
 
 - [V1 to V2 modernization case study](case-studies/skod-v1-to-v2-modernization.md)
 - [Architecture overview](architecture/README.md)
-- [Module map](architecture/module-map.md)
 - [Durable jobs and outbox architecture](architecture/durable-jobs-outbox.md)
 - [ADR index](adr/README.md)
+
+Module map: Private implementation detail -- summarized in this public
+case study.
 
 ### Technical Program / Delivery Lead
 
@@ -47,9 +49,9 @@ Recommended files:
 
 - [AI-assisted delivery loop](case-studies/ai-assisted-delivery-loop.md)
 - [AI team productivity loop](runbooks/ai-team-productivity-loop.md)
-- [Release process](runbooks/release-process.md)
-- [Risk register](runbooks/risk-register.md)
-- [Feature parity audit](feature-parity-audit.md)
+
+Release process, risk register, and detailed parity audit: Private
+implementation detail -- summarized in this public case study.
 
 ### Transformation Lead
 
@@ -62,8 +64,10 @@ Recommended files:
 - [Executive summary](00-executive-summary.md)
 - [V1 to V2 modernization case study](case-studies/skod-v1-to-v2-modernization.md)
 - [AI-assisted delivery loop](case-studies/ai-assisted-delivery-loop.md)
-- [Drupal to V2 architecture guide](architecture/drupal-to-v2-architecture-guide.md)
 - [Observability runbook](runbooks/observability.md)
+
+Detailed Drupal-to-V2 mapping: Private implementation detail --
+summarized in this public case study.
 
 ## Relationship To Private Product Code
 

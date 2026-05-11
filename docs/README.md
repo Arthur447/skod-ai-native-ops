@@ -9,12 +9,13 @@
 | [00-executive-summary.md](00-executive-summary.md) | Three-minute overview for recruiters, CTOs, CPTOs, and transformation leads. |
 | [06-recruiter-demo-guide.md](06-recruiter-demo-guide.md) | Five-minute and fifteen-minute reading paths by role. |
 | [case-studies/](case-studies/) | Recruiter-facing case studies on modernization and AI-assisted delivery governance. |
-| [architecture/](architecture/) | Platform architecture, module map, request flow, durable jobs, email flow, and migration guides. |
+| [architecture/](architecture/) | Platform architecture summaries for durable jobs, email flow, observability, and platform boundaries. |
 | [runbooks/](runbooks/) | Operational playbooks for onboarding, release, observability, local workers, AI productivity, and risk. |
 | [adr/](adr/) | Repository-scoped Architecture Decision Records. |
 | [backlog/](backlog/) | Refonte ticket candidates derived from the V1 to V2 parity audit. |
-| [feature-parity-audit.md](feature-parity-audit.md) | Human-readable parity audit. |
-| [feature-parity-audit.yaml](feature-parity-audit.yaml) | Machine-readable parity audit used for planning. |
+
+Private implementation detail, including the detailed parity audit, is
+summarized in the public case studies rather than published directly.
 
 ## How To Read This Repo
 
