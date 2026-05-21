@@ -9,6 +9,8 @@ Use this path to understand the positioning quickly:
    leadership overview.
 3. [AI-assisted delivery loop](case-studies/ai-assisted-delivery-loop.md)
    for the governance model.
+4. [AI Factory with HITL gates](case-studies/ai-factory-human-in-the-loop.md)
+   for the newest delivery-orchestration R&D increment.
 
 ## Fifteen-minute Reading Path
 
@@ -17,10 +19,11 @@ Use this path for a more serious screen:
 1. [Executive summary](00-executive-summary.md)
 2. [V1 to V2 modernization case study](case-studies/skod-v1-to-v2-modernization.md)
 3. [AI-assisted delivery loop case study](case-studies/ai-assisted-delivery-loop.md)
-4. [Architecture overview](architecture/README.md)
-5. [ADR index](adr/README.md)
-6. [AI team productivity loop](runbooks/ai-team-productivity-loop.md)
-7. [Observability runbook](runbooks/observability.md)
+4. [AI Factory with HITL gates](case-studies/ai-factory-human-in-the-loop.md)
+5. [Architecture overview](architecture/README.md)
+6. [ADR index](adr/README.md)
+7. [AI team productivity loop](runbooks/ai-team-productivity-loop.md)
+8. [Observability runbook](runbooks/observability.md)
 
 ## What To Look At By Role
 
@@ -34,6 +37,7 @@ Recommended files:
 
 - [V1 to V2 modernization case study](case-studies/skod-v1-to-v2-modernization.md)
 - [Architecture overview](architecture/README.md)
+- [AI Factory with HITL gates](case-studies/ai-factory-human-in-the-loop.md)
 - [Durable jobs and outbox architecture](architecture/durable-jobs-outbox.md)
 - [ADR index](adr/README.md)
 
@@ -48,6 +52,7 @@ release thinking, runbooks, risk tracking, and feedback loops.
 Recommended files:
 
 - [AI-assisted delivery loop](case-studies/ai-assisted-delivery-loop.md)
+- [AI Factory with HITL gates](case-studies/ai-factory-human-in-the-loop.md)
 - [AI team productivity loop](runbooks/ai-team-productivity-loop.md)
 
 Release process, risk register, and detailed parity audit: Private
@@ -64,6 +69,7 @@ Recommended files:
 - [Executive summary](00-executive-summary.md)
 - [V1 to V2 modernization case study](case-studies/skod-v1-to-v2-modernization.md)
 - [AI-assisted delivery loop](case-studies/ai-assisted-delivery-loop.md)
+- [AI Factory with HITL gates](case-studies/ai-factory-human-in-the-loop.md)
 - [Observability runbook](runbooks/observability.md)
 
 Detailed Drupal-to-V2 mapping: Private implementation detail --

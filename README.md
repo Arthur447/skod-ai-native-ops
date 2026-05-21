@@ -41,6 +41,7 @@ governance that can scale beyond one maintainer.
 | [Recruiter demo guide](docs/06-recruiter-demo-guide.md) | Five-minute and fifteen-minute reading paths by target role. |
 | [V1 to V2 modernization case study](docs/case-studies/skod-v1-to-v2-modernization.md) | Legacy-to-modern platform patterns and leadership takeaways. |
 | [AI-assisted delivery loop case study](docs/case-studies/ai-assisted-delivery-loop.md) | How AI work is scoped, gated, reviewed, and converted into learning. |
+| [AI Factory with HITL gates](docs/case-studies/ai-factory-human-in-the-loop.md) | LangGraph-based delivery-agent prototype with deterministic human validation gates. |
 | [Architecture docs](docs/architecture/README.md) | Current platform shape, request flow, module map, durable jobs, and related diagrams. |
 | [Runbooks](docs/runbooks/README.md) | Operational discipline for onboarding, release, observability, workers, and AI productivity. |
 | [ADRs](docs/adr/README.md) | Repository-scoped architecture decisions and governance records. |
@@ -79,6 +80,10 @@ retain accountability.
   behind module contracts.
 - **Inbound reply migration**: EmailConnect-style inbound mail handling
   is treated as a platform capability, not a scattered integration.
+- **Human-in-the-loop AI Factory**: LangGraph-based delivery-agent
+  orchestration pauses at business-rule extraction, persists pending
+  gates, supports CTO feedback loops, and notifies reviewers
+  asynchronously.
 
 ## What Is Public
 

@@ -8,7 +8,7 @@
 |---|---|
 | [00-executive-summary.md](00-executive-summary.md) | Three-minute overview for recruiters, CTOs, CPTOs, and transformation leads. |
 | [06-recruiter-demo-guide.md](06-recruiter-demo-guide.md) | Five-minute and fifteen-minute reading paths by role. |
-| [case-studies/](case-studies/) | Recruiter-facing case studies on modernization and AI-assisted delivery governance. |
+| [case-studies/](case-studies/) | Recruiter-facing case studies on modernization, AI-assisted delivery governance, and the HITL AI Factory prototype. |
 | [architecture/](architecture/) | Platform architecture summaries for durable jobs, email flow, observability, and platform boundaries. |
 | [runbooks/](runbooks/) | Operational playbooks for onboarding, release, observability, local workers, AI productivity, and risk. |
 | [adr/](adr/) | Repository-scoped Architecture Decision Records. |
@@ -25,6 +25,7 @@ operating model behind a real modernization program:
 - transformation engineering;
 - AI-native delivery governance;
 - human-in-the-loop review;
+- AI Factory orchestration with deterministic validation gates;
 - modular platform modernization;
 - observability and delivery predictability.
 
