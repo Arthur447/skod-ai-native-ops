@@ -12,10 +12,9 @@
 Skod is operated by a single human today. The engineering operating
 model (see `docs/HOW-WE-OPERATE.md`) applies AI-native principles
 (agents + HITL + bounded contexts + eval-driven iteration) to the
-technical side of the business. PR #913 and the subsequent
-enforcement-tooling R&D (dep-cruiser, jscpd, MCP server for dev
-velocity) are concrete expressions of those principles on the
-engineering slice.
+technical side of the business. Private implementation increments and
+enforcement-tooling R&D are concrete expressions of those principles on
+the engineering slice.
 
 The strategic question is whether to extend these principles
 **beyond engineering** — to marketing, product, customer success,
@@ -24,12 +23,11 @@ business function** is operated by a supervised agent under the same
 discipline: one agent per bounded context, HITL on irreversible
 actions, eval-driven iteration, prompt-as-code.
 
-Why now? Skod's positioning as a leader-of-market reference
-implementation for AI-native organizations is the real professional
-differentiator for Arthur. An engineering-only AI-native stack is
-commoditizing. A *whole-company* AI-native organization, operated
-by a solo founder and publicly demonstrable on GitHub, does not
-yet have a canonical reference in the market.
+Why now? Skod's positioning as a reference implementation for
+AI-native organizations is the professional differentiator. An
+engineering-only AI-native stack is commoditizing. A *whole-company*
+AI-native organization, publicly demonstrable through governance docs,
+does not yet have a canonical reference in the market.
 
 ## Decision
 
@@ -83,7 +81,7 @@ the business's current growth lever.
 
 ### A. Build 5-10 agents in parallel
 
-*Rejected.* Arthur is one operator. Each agent requires 1-2 weeks
+*Rejected.* The current operating reality is one primary operator. Each agent requires 1-2 weeks
 of focused work to reach production quality, plus ongoing prompt
 tuning and eval iteration (~30 min/week/agent). Five agents built
 in parallel = none will be production-quality; the CV asset
@@ -91,15 +89,15 @@ becomes a liability when a reviewer opens the repo.
 
 ### B. Stay engineering-only until team grows to 5+
 
-*Rejected.* The professional differentiation for Arthur comes from
-demonstrating the 360° pattern *at solo scale*. Waiting for a team
-to materialize before extending the model means the asset is never
-built — employers are evaluating Arthur now, not in 18 months.
+*Rejected.* The professional differentiation comes from demonstrating
+the 360° pattern before a larger team exists. Waiting for a team to
+materialize before extending the model means the operating asset is
+never built.
 
 ### C. Build only SaaS-ready tooling (generic, productizable)
 
 *Rejected.* Skod is the business, not the product. Generic SaaS
-tooling (Gumloop, Lindy, Clay) already exists at market. Arthur's
+tooling (Gumloop, Lindy, Clay) already exists at market. The
 differentiator is **operating** a real business with agents, not
 building another agent platform.
 
@@ -107,30 +105,28 @@ building another agent platform.
 
 ### Positive
 
-- **Singular professional positioning**. Arthur can credibly claim
-  to operate a whole-company AI-native organization — a profile
-  that does not yet exist in the French (or European) job market
-  at solo-founder scale.
+- **Singular professional positioning**. The public operating layer can
+  credibly demonstrate a whole-company AI-native organization pattern,
+  not only isolated engineering automation.
 - **Skod business acceleration**. Each agent is chosen for ROI
   against the current business bottleneck, so the operating-model
   investment doubles as product/growth investment.
 - **Scalable operating model**. When Skod hires, the operating
   model is already in place. Humans join an existing structure
   instead of inventing one on the fly.
-- **Composable with existing work**. The engineering side (HOW-WE-
-  OPERATE, enforcement tooling, MCP, PR #913) plugs into the 360°
-  model cleanly — engineering becomes one of seven functions,
+- **Composable with existing work**. The engineering operating model,
+  enforcement tooling, and AI-assisted delivery practices plug into the
+  360° model cleanly — engineering becomes one of several functions
   governed by the same principles.
 
 ### Negative / Risks
 
-- **Discipline cost**. The one-at-a-time rule is strict and will
-  feel slow. Mitigation: publish the roadmap visibly so Arthur
-  holds himself accountable in public.
-- **Cost of tokens / tool fees**. Each running agent burns Claude
-  API tokens continuously. At 5 agents × moderate usage, expect
-  ~€100-300/month in API spend. Acceptable at the business's
-  current stage; revisit if the number of active agents doubles.
+- **Discipline cost**. The one-at-a-time rule is strict and can feel
+  slow. Mitigation: publish the roadmap visibly so progress and
+  tradeoffs are reviewable.
+- **Cost of tokens / tool fees**. Each running agent consumes API and
+  tool budget. Cost is tracked as an operating KPI and revisited if the
+  number of active agents doubles.
 - **Risk of agent output degradation**. Any agent can drift as
   the business evolves. Mitigation: mandatory monthly eval review
   per agent once in production, with roll-back authority if the
@@ -141,13 +137,13 @@ building another agent platform.
 
 | Function | Bounded context | Status / first agent |
 |---|---|---|
-| Engineering | `commu_*`, services/skod-agent-service | ✅ operating model in place (planner/coder/reviewer/architect agents, MCP for dev velocity) |
-| Marketing | Landing pages, ads, content | 🟡 P10 — LPM + Marketing Iteration Coach (first chantier 360°) |
-| Product | Roadmap, feature prioritization | ❌ P12 deferred until user volume |
-| Sales / Growth | Acquisition, lead funnel | ❌ Not yet — Meta Ads triggered in P10 scope |
-| Customer Success | Consultation answering | ✅ partial — consultation ReAct agent in PR #913 |
-| Operations | Finance, legal, compliance | ❌ Not yet — premature at solo scale |
-| Strategic / Exec | Competitive intel, briefings | ❌ P13/P14 deferred until multiple agents in place |
+| Engineering | Product engineering workflow | Operating model in place |
+| Marketing | Landing pages, ads, content | First non-engineering chantier |
+| Product | Roadmap, feature prioritization | Deferred until user volume |
+| Sales / Growth | Acquisition, lead funnel | Not yet |
+| Customer Success | Consultation answering | Partial supervised-agent pattern |
+| Operations | Finance, legal, compliance | Premature at solo scale |
+| Strategic / Exec | Competitive intel, briefings | Deferred until multiple agents are in place |
 
 ## Follow-ups
 

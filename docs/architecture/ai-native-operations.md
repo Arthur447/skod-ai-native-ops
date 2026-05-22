@@ -57,14 +57,14 @@ flowchart TB
 
     subgraph PRODAGENTS [Product agents — face users]
         direction TB
-        CONSULTAGENT[Consultation ReAct agent<br/>commu_marketplace_agents]:::agent
+        CONSULTAGENT[Consultation ReAct agent<br/>marketplace agents]:::agent
         LPAGENT[LP Optimizer agent<br/>lp_optimizer]:::agent
     end
 
     subgraph SKOD [Skod bounded contexts]
         direction TB
-        CONSULT[commu_consultation_order]:::boundary
-        MKT[commu_marketplace_agents]:::boundary
+        CONSULT[consultation orders]:::boundary
+        MKT[marketplace agents]:::boundary
         LP[Landing pages<br/>lp_optimizer]:::boundary
     end
 
@@ -130,7 +130,7 @@ on the spot.
 | Role | Scope | Drives |
 |---|---|---|
 | **VP Engineering** | Whole system, budget, standards, hiring bar | Risk tiering, KPI targets, ADRs |
-| **Tech Lead `commu_consultation_order`** | Consultation bounded context | Gherkin templates, plan-validation gate |
+| **Tech Lead consultation orders** | Consultation bounded context | Gherkin templates, plan-validation gate |
 | **Tech Lead `lp_optimizer`** | Landing optimization pipeline | Diagnostic rules, approval workflow |
 | **AI Platform Engineer** | MCP servers, prompt library, eval infra | Agent tooling, `AiProviderBridge` |
 | **Quality Engineer** | Fitness functions, KPIs, risk tiering | dep-cruiser rules, jscpd thresholds, RCA |

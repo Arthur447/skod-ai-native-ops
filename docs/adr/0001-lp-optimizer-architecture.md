@@ -4,14 +4,14 @@
 - **Date**: 2026-04-17
 - **Decision maker**: VP Engineering (Arthur Collenot)
 - **Bounded context**: `lp_optimizer` (Python microservice)
-- **Related**: PR #913
+- **Related**: private LP Optimizer implementation increment
 
 ## Context
 
-Skod is in **PMF validation** stage. The primary growth lever is paid
-acquisition via Meta Ads driving traffic to a landing page. At ~€20 spent
-per landing variant, the statistical signal on conversion is robust enough
-to diagnose underperformance and iterate.
+Skod is in **PMF validation** stage. One growth lever is paid acquisition
+driving traffic to a landing page. After a minimum spend threshold per
+variant, the signal is strong enough to diagnose underperformance and
+iterate.
 
 Three constraints frame this chantier:
 
@@ -34,13 +34,13 @@ Build an **agent pipeline with Human-in-the-Loop on activation**, split
 into five deterministic stages, each owned by a single Python module.
 
 ```
-Meta Ads spend trigger (>= €20)
+Paid traffic spend trigger
     ↓
 meta_insights.py       →  collect ads performance
 ga4 (via collector)    →  collect behavioral metrics
 diagnostic.py          →  deterministic rules + LLM enrichment
 generator.py           →  Claude generates single-section HTML variant
-database.py            →  persist run with HMAC callback URLs
+database.py            →  persist run with signed callback URLs
 notifier.py            →  Slack message with approve / reject / preview
     ↓
 HUMAN VALIDATION (Slack action)
@@ -54,9 +54,9 @@ Key design choices:
    run per day means no concurrency problem to solve. Adding a queue now
    would be YAGNI.
 
-2. **SQLite with HMAC-signed callback URLs**. Persistence is file-local,
-   no separate DB server. HMAC-SHA256 on callback URLs prevents tampering
-   by anyone without the `CALLBACK_SECRET`.
+2. **SQLite with signed callback URLs**. Persistence is file-local,
+   no separate DB server. Signed callbacks prevent approval tampering
+   without exposing private infrastructure detail.
 
 3. **Never auto-deploy**. `deployer.py` is invoked **only** from the Slack
    callback path, never from the generator. This is architectural, not a
@@ -66,10 +66,9 @@ Key design choices:
    section at a time, not the whole page. Smaller diff to review, easier
    rollback, lower hallucination surface.
 
-5. **Provider abstraction** via the `AiProviderBridge` service in
-   `commu_ia_agents`. The LP Optimizer doesn't import Anthropic directly;
-   it goes through the bridge, so we can swap providers without rewriting
-   the pipeline.
+5. **Provider abstraction**. The LP Optimizer does not import an LLM
+   provider directly; it goes through an application bridge so providers
+   can be swapped without rewriting the pipeline.
 
 ## Alternatives considered
 
@@ -93,13 +92,13 @@ service to run, another failure mode, more configuration, more tests.
 Revisit when we hit **> 3 runs/day** or when we add a second pipeline
 sharing the infra.
 
-### D. Persist to the existing MariaDB
+### D. Persist to the legacy product database
 
-*Rejected.* Would create a cross-service dependency between the Python
-microservice and the Drupal MariaDB. SQLite makes the microservice
-self-contained and deployable independently. If we later need cross-
-service querying, we expose via a thin Drupal REST endpoint, not shared
-DB access.
+*Rejected.* Would create a cross-service dependency between the agent
+service and the legacy product database. SQLite makes the microservice
+self-contained and deployable independently. If cross-service querying
+is later needed, it should happen through an explicit API, not shared
+database access.
 
 ## Consequences
 
@@ -141,7 +140,7 @@ DB access.
 
 ## References
 
-- PR #913 — implementation
-- `services/skod-agent-service/app/lp_optimizer/README.md` — operational doc
-- `docs/HOW-WE-OPERATE.md` — parent operating model
-- `docs/architecture/ai-native-operations.md` — system-wide architecture
+- [AI-native operations architecture](../architecture/ai-native-operations.md)
+- [AI team productivity loop](../runbooks/ai-team-productivity-loop.md)
+- Private implementation PRs and service-level runbooks are intentionally
+  not mirrored in this public repository.

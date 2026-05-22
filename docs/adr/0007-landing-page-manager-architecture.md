@@ -13,32 +13,30 @@
 
 ### Business state
 
-Skod is in PMF validation. Current metrics (2026-04-17):
+Skod is in PMF validation. The public-safe business state is:
 
-- **300 visits** to the landing page (skod.fr) from Meta Ads
-- **0 conversions** (signups as consultant)
-- Meta Ads currently paused, iterated every €20 spent
-- One qualitative signal: a young lawyer validated the paid-messaging
-  concept at 100% via LinkedIn outreach
-- One engineering asset: PR #913's LP Optimizer designed for
-  auto-iteration on landing variants with Slack HITL
+- paid acquisition is being tested as a learning channel;
+- conversion evidence is not yet strong enough to claim PMF;
+- landing page iteration must preserve hypotheses, versions, and
+  attribution;
+- one private LP Optimizer implementation already validates the
+  auto-iteration pattern with Slack HITL.
 
 ### Current workflow (manual, today)
 
-Arthur operates the LP iteration loop manually:
+The current LP iteration loop is partly manual:
 
-1. Read Meta Event Manager stats
-2. Share stats + the live LP URL with an external ChatGPT conversation
-3. ChatGPT produces a brief (what to change, why)
-4. Arthur pastes the brief into Claude Code in his IDE
-5. Claude Code edits `web/v2/index.html` in place
-6. Deploy, relance ads, wait €20 of spend, repeat
+1. Read acquisition and behavior stats.
+2. Ask an AI assistant to synthesize what to change and why.
+3. Turn that into an implementation brief.
+4. Generate or edit the next landing-page variant.
+5. Deploy, relaunch acquisition, wait for enough signal, repeat.
 
 This workflow *works*, but it has three fatal flaws:
 
-1. **No cross-iteration memory.** Each ChatGPT conversation starts
-   fresh. By iteration 10, ChatGPT has forgotten what was tried at
-   iteration 3. Arthur re-supplies context on every round.
+1. **No cross-iteration memory.** Each assistant session can start
+   fresh. By iteration 10, the system may have forgotten what was tried
+   at iteration 3 unless history is structured.
 2. **No traceability.** Index.html is mutated in place. The historical
    state of v3 is lost when v4 overwrites it. Git log shows diffs but
    not the *hypothesis* that motivated each change.
@@ -47,9 +45,9 @@ This workflow *works*, but it has three fatal flaws:
    content changes, the attribution becomes a moving target — *you
    cannot say "v3 converted better than v2"* cleanly.
 
-### The LPM pattern (Arthur's Cellfish experience)
+### The LPM pattern
 
-At Cellfish, Arthur operated a Landing Page Manager pattern: each
+In prior growth work, Arthur operated a Landing Page Manager pattern: each
 iteration produces a **new** landing page file with a unique URL. Ads
 are pointed at specific versions. Performance is tracked per version.
 Historical versions remain accessible.
@@ -67,8 +65,9 @@ cooperating pieces:
 1. **Data layer** — the authoritative registry of every LP version,
    its lineage, its metadata, its performance.
 2. **Version generator** — two input paths (human-driven briefs via
-   Marketing Iteration Coach + Claude Code, auto-generated variants
-   via PR #913's LP Optimizer). Both write to the same data layer.
+   Marketing Iteration Coach plus an implementation assistant,
+   auto-generated variants via the LP Optimizer). Both write to the same
+   data layer.
 3. **Marketing Iteration Coach agent** — the brain. Reads the data
    layer (version history + performance), proposes the next
    hypothesis to test, drafts the brief for the generator.
@@ -78,14 +77,14 @@ cooperating pieces:
 ```
 HUMAN-DRIVEN PATH (early PMF, now)        AUTO-PATH (post-PMF, later)
 ──────────────────────────────────         ──────────────────────────
-Marketing Iteration Coach (agent)          LP Optimizer (PR #913)
-  • reads LPM history                        • Meta trigger ≥ 20€
+Marketing Iteration Coach (agent)          LP Optimizer
+  • reads LPM history                        • paid traffic trigger
   • analyzes patterns                        • GA4 behavioral metrics
   • proposes next hypothesis                 • diagnostic (SKD-1003)
   • drafts brief                             • variant generator
         │                                            │
         ▼                                            ▼
-   Claude Code                                  Slack HITL
+   Implementation assistant                    Slack HITL
    (edits new file)                                  │
         │                                            ▼
         ▼                                     lp_v{N}.html created
@@ -108,7 +107,7 @@ lp_v{N}.html created
         └─────────────────────────────────────────┘
                           │
                           ▼
-                Meta Ads Campaigns
+                Acquisition campaigns
                 (URL per variant → clean attribution)
 ```
 
@@ -146,7 +145,7 @@ CREATE TABLE lp_performance (
 ### File structure
 
 ```
-web/v2/
+landing-pages/
 ├── index.html              — kept for backward compatibility, redirects
 │                             or proxies to the current default version
 ├── pages/
@@ -155,7 +154,7 @@ web/v2/
 │   ├── lp-v3.html          — …
 │   └── ...
 ├── lp_config.json          — pointer to active version(s), split ratios
-│                             (extension of the PR #913 file)
+│                             (extension of the existing runtime config)
 └── _shared/                — header, footer, CSS, JS snippets
 ```
 
@@ -182,30 +181,28 @@ agents/marketing-iteration-coach/
 └── README.md               — invocation instructions, role explanation
 ```
 
-### Integration with PR #913 (LP Optimizer)
+### Integration with LP Optimizer
 
-PR #913 already contains `lp_v{N}.html` filename conventions and the
-`lp_config.json` pointer — the seeds of the LPM data layer. This ADR
-formalizes and extends that work:
+The LP Optimizer already contains versioned landing-page conventions and
+a runtime configuration pointer — the seeds of the LPM data layer. This
+ADR formalizes and extends that work:
 
-- LP Optimizer's variant files land in `web/v2/pages/` (unchanged
-  path convention).
+- LP Optimizer's variant files land in a versioned landing-page folder.
 - LP Optimizer inserts a row in `lp_versions` when it generates a
   variant (`created_by = 'agent-lp-optimizer'`).
-- LP Optimizer's existing Slack HITL flow becomes one of two paths
-  into the data layer — the other being Marketing Iteration Coach
-  + Claude Code.
+- LP Optimizer's existing Slack HITL flow becomes one of two paths into
+  the data layer — the other being Marketing Iteration Coach plus an
+  implementation assistant.
 
-**No breaking change to PR #913**, only an additive integration
-through the new data layer.
+This is an additive integration through the new data layer, not a
+replacement of the existing LP Optimizer pattern.
 
 ## Alternatives considered
 
 ### A. Continue mutating `index.html` in place
 
 *Rejected.* This is the current workflow. It loses memory, loses
-attribution, and scales poorly past ~5 iterations. Arthur is already
-at iteration 5+ and feeling the pain.
+attribution, and scales poorly after several iterations.
 
 ### B. Git branches as the versioning mechanism
 
@@ -247,7 +244,7 @@ the next chantier after SKD-1003.
 - **Clean attribution.** Each version has its own URL and its own
   Pixel cohort. Conversion claims become rigorous.
 - **Agent has real memory.** The Marketing Iteration Coach reads
-  structured history, not a ChatGPT-context-window blur.
+  structured history, not only assistant conversation context.
 - **Pattern generalizes.** The same data-layer + agent-reader
   pattern can apply to content calendar iterations, email
   sequences, ad creative iterations — each gets its own SQLite
@@ -265,13 +262,13 @@ the next chantier after SKD-1003.
   web server needs attention. Mitigation: single Docker
   deployment for the whole `skod-agent-service`, SQLite lives in
   a mounted volume.
-- **File count grows.** After 20 iterations, `web/v2/pages/`
+- **File count grows.** After 20 iterations, the versioned landing-page folder
   contains 20 HTML files. Some will be archived (status =
   'archived'). Mitigation: a periodic cleanup command that moves
   archived files out of the hot path and into a cold directory.
 - **Agent can propose bad hypotheses.** HITL on generation is not
   HITL on hypothesis quality. Mitigation: the first 2-3 weeks,
-  Arthur reviews every proposed hypothesis before the generator
+  a human reviews every proposed hypothesis before the generator
   runs. As the agent's eval score improves (P4 roadmap), gate
   can loosen.
 
@@ -291,13 +288,13 @@ Draft ticket list:
 - SKD-2005 — Agent catalog skeleton (`agents/marketing-iteration-coach/`)
 - SKD-2006 — Agent tools (list_versions, get_performance,
   get_qualitative_insights, propose_hypothesis, draft_brief)
-- SKD-2007 — Integration hook from LP Optimizer (PR #913) into
+- SKD-2007 — Integration hook from LP Optimizer into
   `lp_versions`
 - SKD-2008 — First real iteration, end-to-end, documented as execution
   log (same pattern as SKD-1003)
 
-Total effort estimate: ~2,5 days focused work. Budget: ~€30 of
-Claude API across agent runs and testing.
+Total effort estimate: a few focused days. API cost is tracked as part
+of normal delivery governance.
 
 ## Follow-ups
 
@@ -316,5 +313,5 @@ Claude API across agent runs and testing.
 - [`docs/ROADMAP-ai-native-organization.md` — P10](../ROADMAP-ai-native-organization.md#p10--lpm--marketing-iteration-coach-first-non-engineering-chantier)
 - [`docs/HOW-WE-OPERATE.md`](../HOW-WE-OPERATE.md) — engineering-side
   operating model (parent document)
-- Arthur's Cellfish experience — prior-art reference (internal memo,
-  not public)
+- Prior growth-platform experience — summarized publicly without
+  exposing private client material.
