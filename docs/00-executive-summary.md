@@ -38,6 +38,9 @@ judgment rather than framework familiarity alone.
   provider boundaries before microservice complexity.
 - **AI-native governance**: GitHub issues, scoped AI prompts, small PRs,
   CI gates, human review, and delivery learning notes.
+- **Team-ready AI workflow**: bounded contexts, curated migration
+  registry, ticket-linked runs, human gates, logs, and audit trail keep
+  AI-assisted work reviewable by more than one person.
 - **Human-in-the-loop control**: AI augments implementation and review
   support, while humans own architecture and acceptance.
 - **Operational maturity**: runbooks, ADRs, observability, risk

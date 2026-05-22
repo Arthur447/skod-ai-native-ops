@@ -1,12 +1,12 @@
 # Skod — AI-Native Operations Architecture
 
-This document describes how Skod operates with autonomous, supervised AI
-agents — both for engineering workflows (dev agents) and for product
-features (product agents facing end users).
+This document describes how Skod operates with supervised AI agents:
+engineering agents that support delivery work, and product agents that
+may assist user-facing workflows.
 
 The architecture is deliberately designed for a team of **~10 engineers**
 even though the current headcount is smaller, so that every scaling decision
-has already been taken when the team grows.
+has already been considered when the team grows.
 
 ## Principles
 
@@ -147,7 +147,9 @@ on the spot.
 
 ## See also
 
-- Commit history on branch `feat/ai-native-operations` — enforcement tooling
-  (dep-cruiser, jscpd) and MCP server for consultations
-- `docs/PLAN_MICROSERVICES.md` — broader microservice vision
-- PR #913 — first cross-context implementation of the architecture above
+- Public case study:
+  [AI Factory with HITL gates](../case-studies/ai-factory-human-in-the-loop.md)
+- Public runbook:
+  [AI team productivity loop](../runbooks/ai-team-productivity-loop.md)
+- Private implementation references, branch names, and PR numbers are
+  intentionally not mirrored in this public repository.

@@ -38,10 +38,10 @@ governance that can scale beyond one maintainer.
 | Path | Why it matters |
 |---|---|
 | [Executive summary](docs/00-executive-summary.md) | Three-minute overview for recruiters, CTOs, CPTOs, and transformation leads. |
-| [Recruiter demo guide](docs/06-recruiter-demo-guide.md) | Five-minute and fifteen-minute reading paths by target role. |
+| [Recruiter demo guide](docs/06-recruiter-demo-guide.md) | Five-minute and fifteen-minute reading paths focused on team-ready AI governance. |
 | [V1 to V2 modernization case study](docs/case-studies/skod-v1-to-v2-modernization.md) | Legacy-to-modern platform patterns and leadership takeaways. |
 | [AI-assisted delivery loop case study](docs/case-studies/ai-assisted-delivery-loop.md) | How AI work is scoped, gated, reviewed, and converted into learning. |
-| [AI Factory with HITL gates](docs/case-studies/ai-factory-human-in-the-loop.md) | LangGraph-based delivery-agent prototype with deterministic human validation gates. |
+| [AI Factory with HITL gates](docs/case-studies/ai-factory-human-in-the-loop.md) | LangGraph-based delivery-agent prototype with bounded contexts, audit trail, and deterministic human validation gates. |
 | [Architecture docs](docs/architecture/README.md) | Current platform shape, request flow, module map, durable jobs, and related diagrams. |
 | [Runbooks](docs/runbooks/README.md) | Operational discipline for onboarding, release, observability, workers, and AI productivity. |
 | [ADRs](docs/adr/README.md) | Repository-scoped architecture decisions and governance records. |
