@@ -51,10 +51,9 @@ human review by the tech lead of the bounded context, progressive rollout.
 ## How quality is kept
 
 - **Enforcement in CI** via
-  [`rnd/ai-native-tooling/dep-cruiser.config.cjs`](../rnd/ai-native-tooling/dep-cruiser.config.cjs)
-  (boundary rules) and
-  [`rnd/ai-native-tooling/jscpd.config.json`](../rnd/ai-native-tooling/jscpd.config.json)
-  (duplication threshold 5%). Both block PRs on violation.
+  boundary rules and duplication thresholds. These checks are documented
+  publicly as a governance pattern; private rule files and internal
+  module paths are not mirrored here.
 - **Fitness functions** — architecture invariants are tested. A service
   cannot import another bounded context silently.
 - **Separation of intent and implementation** — humans write acceptance
@@ -72,7 +71,7 @@ Scope is fixed even when one person wears many hats today.
 - **Tech Leads per bounded context** — own the Gherkin templates, the
   plan-validation gate, the KPIs of their domain.
 - **AI Platform Engineer** — MCP servers, prompt library, evaluation infra,
-  provider abstractions (`AiProviderBridge`, `EmbeddingBridge`).
+  and provider abstractions.
 - **Quality Engineer** — CI enforcement rules, KPIs, RCA, observability.
 - **Product Ops** — HITL approvals on product-facing actions (Slack
   approvals for LP variants, consultation flags).
@@ -85,8 +84,7 @@ rigor. Raw coding throughput has ceased to be the differentiator.
 ## KPIs
 
 Business KPI (the one that matters): **conversion rate of the signup
-funnel** — from Meta Ads click to paying consultant. Everything below
-serves this end.
+funnel**. Everything below serves this end.
 
 Operating KPIs (how the engineering machine is doing):
 
@@ -102,10 +100,11 @@ Operating KPIs (how the engineering machine is doing):
   scale and to be ready for growth.
 - Enforcement tooling (dep-cruiser, jscpd) set up, not yet wired into CI —
   next step.
-- MCP server for consultations exists locally for Claude Code dev velocity —
+- A local MCP-style integration exists for development velocity; it is
   local only, not deployed.
-- First cross-context AI application: the LP Optimizer pipeline in PR #913
-  (Meta Ads → GA4 → Claude → Slack HITL → landing variant activation).
+- First cross-context AI application: the LP Optimizer pattern
+  (acquisition signal → analytics → AI diagnosis → Slack HITL →
+  landing variant activation).
 - What is missing vs. target: CI gating on the linters, eval infra, audit
   trail centralization, prompt library.
 
@@ -113,5 +112,5 @@ Operating KPIs (how the engineering machine is doing):
 
 - [`docs/architecture/ai-native-operations.md`](architecture/ai-native-operations.md)
   — full Mermaid diagram and HITL decision matrix
-- PR #913 — concrete application: LP Optimizer + AI Agent infrastructure
-- [`rnd/ai-native-tooling/NOTES.md`](../rnd/ai-native-tooling/NOTES.md) — enforcement tooling and MCP server R&D notes
+- [AI team productivity loop](runbooks/ai-team-productivity-loop.md)
+  — public-safe runbook for scoped AI-assisted delivery

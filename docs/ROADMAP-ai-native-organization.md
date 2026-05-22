@@ -9,9 +9,9 @@ reference point** for what a small team (operated as ~10 engineers) can
 do with autonomous supervised agents. Not a demo, not a toy — a real SaaS
 business with its operating model visible in public Git history.
 
-References we benchmark against: Anthropic (Claude Code, skills, MCP),
-Cognition (Devin multi-agent orchestration), Sierra (product agents with
-HITL), Cursor (agent-first IDE), Replit (eval harness).
+References we benchmark against: AI coding agents, MCP-style tool
+interfaces, multi-agent orchestration, product agents with HITL, and
+eval harnesses.
 
 ## Current state — honest inventory
 
@@ -21,12 +21,12 @@ HITL), Cursor (agent-first IDE), Replit (eval harness).
 | System architecture diagram | ✅ (v1, needs split) | [`docs/architecture/ai-native-operations.md`](architecture/ai-native-operations.md) |
 | ADR series | 🟡 (1 of ~6) | [`docs/adr/0001-lp-optimizer-architecture.md`](adr/0001-lp-optimizer-architecture.md) |
 | Gherkin backlog with risk tiers | ✅ (one chantier) | [`docs/backlog/lp-optimizer-chantier.md`](backlog/lp-optimizer-chantier.md) |
-| Enforcement tooling (dep-cruiser, jscpd) | 🟡 (configured, not in CI) | [`rnd/ai-native-tooling/`](../rnd/ai-native-tooling/) |
-| MCP server for dev velocity | 🟡 (local only) | [`rnd/ai-native-tooling/mcp-servers/skod-consultations/`](../rnd/ai-native-tooling/mcp-servers/skod-consultations/) |
-| Agent infrastructure (Python service) | ✅ (PR #913) | `services/skod-agent-service/` |
-| Provider abstraction | ✅ | `web/modules/custom/commu_ia_agents/` (`AiProviderBridge`, `EmbeddingBridge`) |
-| LP Optimizer with HITL | ✅ (PR #913) | `services/skod-agent-service/app/lp_optimizer/` |
-| Consultation ReAct agent | ✅ (PR #913) | `services/skod-agent-service/app/agent.py` |
+| Enforcement tooling | 🟡 (configured, not in CI) | Public-safe pattern summarized in this repo |
+| MCP-style dev integration | 🟡 (local only) | Private implementation detail |
+| Agent infrastructure | ✅ | Private implementation detail |
+| Provider abstraction | ✅ | Public-safe pattern summarized in architecture docs |
+| LP Optimizer with HITL | ✅ | Public-safe pattern summarized in ADR 0001 |
+| Consultation agent pattern | ✅ | Private implementation detail |
 | Eval harness | ❌ | — |
 | Prompt library (versioned, reviewable) | ❌ | — (prompts scattered in code) |
 | Agent KPI tracking (actual measurements) | ❌ | — (listed in HOW-WE-OPERATE, not instrumented) |
@@ -71,9 +71,9 @@ executed with full discipline to serve as the reference pattern for all
 future tickets. SKD-1003 (Diagnostic with LLM enrichment) is the right
 choice: it exercises the rules/LLM boundary, mid-risk, touches prompts.
 
-**Artefact target:** code merged in PR #913's scope, plus an execution
-log (plan → validated → coded → reviewed → merged) captured as a commit
-trailer or short doc.
+**Artefact target:** one private implementation ticket executed with a
+public-safe execution summary (plan → validated → coded → reviewed →
+merged).
 
 **Status:** in progress (this session).
 
@@ -84,9 +84,8 @@ feel. Every leading AI-native org has an eval infrastructure — it's what
 turns *"our agent works"* into *"our agent works better than last month
 on these 120 cases"*. Starting with LP Optimizer variants.
 
-**Artefact target:** `docs/adr/0002-eval-harness.md` + a minimal
-`services/skod-agent-service/app/evals/` skeleton with one eval suite
-running.
+**Artefact target:** `docs/adr/0002-eval-harness.md` plus a private
+minimal eval suite.
 
 **Status:** not started (follow-up noted in ADR 0001).
 
@@ -98,7 +97,7 @@ in an AI-native org — every agent-produced line of code derives from
 them. They deserve their own folder, their own review convention, and
 their own versioning discipline. See ADR 0003 (to write).
 
-**Artefact target:** `services/skod-agent-service/prompts/` with
+**Artefact target:** a prompt library with
 `<bounded-context>/<tool>.md` layout, a review convention in
 `docs/CONTRIBUTING-prompts.md`, and `docs/adr/0003-prompt-as-code.md`.
 
@@ -111,9 +110,8 @@ per ticket, HITL latency, hallucination rate). Today these are aspirations.
 Instrument them — even roughly, with a SQLite table written to per ticket
 — so future claims on those metrics are grounded in data.
 
-**Artefact target:** a small `agent_metrics` module in
-`services/skod-agent-service/` + a JSONL or SQLite log fed by the agents
-and the CI pipeline, plus a weekly roll-up.
+**Artefact target:** a small agent metrics module plus a JSONL or SQLite
+log fed by the agents and the CI pipeline, plus a weekly roll-up.
 
 **Status:** not started.
 
@@ -138,8 +136,8 @@ exist yet. Making it real — even as a minimal Python function that calls
 three prompt-based reviewers and aggregates — moves the review step from
 concept to operational.
 
-**Artefact target:** `docs/adr/0004-review-orchestrator.md` + a minimal
-`services/skod-agent-service/app/review/` implementation.
+**Artefact target:** `docs/adr/0004-review-orchestrator.md` plus a
+minimal private review-orchestrator implementation.
 
 **Status:** not started.
 
@@ -159,11 +157,10 @@ for the governing principles.
 
 The first non-engineering chantier is **LPM (Landing Page Manager) +
 Marketing Iteration Coach**, chosen because Skod's current business
-bottleneck is PMF validation with zero conversion on 300 ad-sourced
-visits. Accelerating the learning loop on landing-page iteration is
-the highest-ROI business move we can make right now — and it is also
-a pattern Arthur operated at scale at Cellfish, so we re-apply a
-proven approach with a modern agent layer. Formalized in
+bottleneck is PMF validation. Accelerating the learning loop on
+landing-page iteration is the highest-ROI business move we can make
+right now, and it re-applies a proven growth-platform pattern with a
+modern agent layer. Formalized in
 [`docs/adr/0007-landing-page-manager-architecture.md`](adr/0007-landing-page-manager-architecture.md).
 
 ### P9 — Agent catalog structure
@@ -183,20 +180,16 @@ first 360° agent ships with the pattern in place.
 
 ### P10 — LPM + Marketing Iteration Coach (first non-engineering chantier)
 
-**Why:** Skod's current conversion rate from Meta Ads is 0 on 300
-visits — the core business gap. Arthur's existing workflow (ChatGPT
-co-thinking → brief → Claude Code edit → deploy → relance ads) works
-but loses all cross-iteration learning. The **LPM pattern** (landing
-pages versioned as first-class entities with metadata, performance
-tracked per version) is something Arthur successfully operated at
-Cellfish; the novelty is adding an agent layer that leverages the
-versioned history to propose the next hypothesis.
+**Why:** Skod's current PMF validation depends on faster learning from
+acquisition experiments. The existing assistant-supported workflow works
+but loses cross-iteration learning. The **LPM pattern** makes landing
+pages first-class versioned entities with metadata and performance
+tracked per version; the novelty is adding an agent layer that leverages
+the versioned history to propose the next hypothesis.
 
 **Artefact target:**
-- `web/v2/pages/lp-v{N}.html` — versioned LP files (lp-v1 is the
-  current live page, relocated)
-- `web/v2/lp_config.json` — active version pointer (already exists
-  in PR #913, extended for multi-version routing)
+- versioned LP files;
+- active version pointer and routing config;
 - `/lp/v{N}` routes on the web server
 - SQLite schema `lp_versions` + `lp_performance` (migration via
   Alembic)
@@ -204,8 +197,8 @@ versioned history to propose the next hypothesis.
   tools, evals)
 - Meta Marketing API client reading performance per campaign /
   version
-- Integration seam with PR #913's LP Optimizer so both auto-generated
-  and human-driven variants land in the same data layer
+- integration seam with the LP Optimizer so both auto-generated and
+  human-driven variants land in the same data layer
 
 **Estimated effort:** ~2,5 days focused work (schema + routing +
 agent + first real iteration + tuning).
@@ -307,4 +300,5 @@ chantier produces:
 - [`docs/architecture/ai-native-operations.md`](architecture/ai-native-operations.md) — system architecture
 - [`docs/adr/`](adr/) — Architecture Decision Records
 - [`docs/backlog/lp-optimizer-chantier.md`](backlog/lp-optimizer-chantier.md) — first chantier
-- [`rnd/ai-native-tooling/NOTES.md`](../rnd/ai-native-tooling/NOTES.md) — R&D notes
+- Private R&D notes are intentionally not mirrored in this public
+  navigation path.
