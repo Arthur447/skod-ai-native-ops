@@ -1,5 +1,26 @@
 # Recruiter Demo Guide
 
+## What This Page Demonstrates
+
+This repository is a public operating dossier for a private engineering
+program. Its main signal is not "AI wrote code." The signal is that the
+work is structured so a team can use AI safely inside a controlled
+delivery system.
+
+The strongest example is the AI Factory workstream:
+
+- migration work is scoped by bounded context;
+- jobs start from a curated backlog or migration registry;
+- operators have a limited action set, not an open-ended agent console;
+- business-rule extraction stops at a human approval gate;
+- logs, audit trail, thread IDs, and ticket IDs make work reviewable;
+- private code, prompts, secrets, and raw execution logs stay out of
+  the public repository.
+
+For a recruiter or hiring manager, this is the angle to evaluate: the
+project shows engineering leadership around team standards, scope
+control, auditability, and safe AI-assisted delivery.
+
 ## Five-minute Reading Path
 
 Use this path to understand the positioning quickly:
@@ -30,12 +51,26 @@ Use this path for a more serious screen:
 ### Team-readiness Signal
 
 The AI Factory case study is meant to show more than agent usage. It
-shows how the work is structured so several people can operate it:
-bounded contexts, curated migration scope, ticket-linked runs, human
-approval gates, logs, audit trail, and a small set of allowed operator
-actions.
+shows how the work is structured so several people can operate the same
+system without relying on personal prompt history or private terminal
+state.
 
-That is the intended hiring signal: AI is treated as part of an
+Concrete signals to look for:
+
+- **Standards**: runbooks, ADRs, Definition of Done discipline, and
+  documented architecture tradeoffs.
+- **Scope control**: bounded contexts, MVP migration registry, and
+  explicit exclusion of out-of-scope legacy surfaces.
+- **Human authority**: approval gates before AI output becomes
+  implementation scope.
+- **Traceability**: ticket-linked runs, thread IDs, pending gate
+  artifacts, logs, and audit trail.
+- **Limited actions**: the operator can launch, monitor, approve,
+  reject, and inspect. The workflow is intentionally framed.
+- **Public/private boundary**: the public repo explains governance
+  without exposing confidential implementation detail.
+
+That is the intended hiring signal: AI is treated as part of a team
 engineering operating system, not as an unbounded code-generation tool.
 
 ### CTO / VP Engineering
