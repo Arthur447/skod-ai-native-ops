@@ -103,6 +103,82 @@ with:
 If the webhook is absent, the system falls back to console logging. This
 keeps local development and CI-friendly scripts non-blocking.
 
+## Mission Control CLI
+
+The next increment turned isolated scripts into an interactive terminal
+control plane for the AI Factory.
+
+The private implementation now exposes a Mission Control CLI that lets
+the operator:
+
+- launch a new migration job from a curated backlog ticket;
+- monitor pending human gates;
+- approve or reject gates without memorizing command syntax;
+- inspect recent factory logs;
+- view backlog progress grouped by epic, ticket status, and assignee;
+- inspect an audit trail for a selected ticket.
+
+This changed the operating posture from "run scripts in the right
+order" to "operate a small delivery system." The CLI is intentionally
+terminal-first, because the current audience is the engineering team
+working in Warp / shell sessions, not external product users.
+
+## Backlog and Migration Registry
+
+The factory now distinguishes two related planning artifacts:
+
+- a migration registry listing eligible legacy modules and their source
+  paths;
+- a backlog organized by epic and ticket, carrying status, context,
+  assignee, and active thread ID when a job is running.
+
+The registry is curated against the parity audit. Surfaces explicitly
+classified as out of MVP scope are not offered as migration jobs. This
+prevents the AI Factory from making an excluded legacy surface look like
+valid work simply because a source file exists.
+
+When a job starts from a backlog ticket, the ticket ID is injected into
+factory state and copied into pending gate artifacts. This makes the
+human review, generated tests, implementation loop, and audit trail
+traceable back to a delivery ticket.
+
+## Test-first Developer Loop
+
+The graph evolved beyond Gate-1 extraction:
+
+1. The Architect node generates a Vitest suite from validated business
+   rules and interface contracts.
+2. The Developer node generates production TypeScript for the target
+   context.
+3. The Reviewer node runs the target test file locally.
+4. Failed tests loop back to the Developer node with captured reviewer
+   output.
+5. A bounded iteration count prevents infinite AI repair loops.
+6. Persistent failure escalates to a human intervention path.
+
+This is a deliberately conservative red/green loop. AI may attempt the
+implementation, but test execution and bounded retry policy control the
+state transition.
+
+## Audit Trail
+
+The latest session added a ticket-scoped audit trail for factory
+interactions. Each node records:
+
+- timestamp;
+- ticket ID;
+- actor;
+- node name;
+- prompt;
+- response;
+- model.
+
+Runtime audit files are intentionally ignored from the public repository
+because raw prompts and responses can contain private source context,
+business details, or large generated artifacts. The public repository
+documents the logging pattern and governance rationale, not the raw
+private execution logs.
+
 ## Why This Matters
 
 This pattern demonstrates an AI-native delivery system with explicit
@@ -128,6 +204,8 @@ a code generator and using AI as a governed delivery subsystem.
   before it reasons about a module.
 - **Operational readiness**: pending gates are persisted as reviewable
   artifacts and can notify reviewers asynchronously.
+- **Delivery observability**: backlog, gates, logs, and audit trail are
+  surfaced from one operator interface.
 - **Reusable governance**: the same HITL pattern can later apply to
   billing, auth, data migrations, or provider integrations.
 
