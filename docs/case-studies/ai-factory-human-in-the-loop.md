@@ -123,6 +123,27 @@ order" to "operate a small delivery system." The CLI is intentionally
 terminal-first, because the current audience is the engineering team
 working in Warp / shell sessions, not external product users.
 
+## Team Operating Structure
+
+The important design choice is that the factory is not an open-ended
+agent prompt. It is framed as a team workflow with explicit operating
+rules:
+
+- work starts from a backlog ticket or a curated migration registry;
+- each run is attached to one bounded context;
+- out-of-scope legacy surfaces are excluded before the operator can
+  launch a job;
+- the available actions are deliberately narrow: launch, monitor,
+  approve, reject, inspect logs, and inspect audit trail;
+- human validation gates define where authority sits;
+- generated work, gate state, logs, and audit records remain tied to a
+  ticket ID.
+
+This makes the workflow handoff-friendly. A teammate can inspect the
+ticket, see the active thread, read the gate summary, review logs, and
+understand what the factory was allowed to do without relying on an
+informal Slack history or a private terminal session.
+
 ## Backlog and Migration Registry
 
 The factory now distinguishes two related planning artifacts:
@@ -141,6 +162,11 @@ When a job starts from a backlog ticket, the ticket ID is injected into
 factory state and copied into pending gate artifacts. This makes the
 human review, generated tests, implementation loop, and audit trail
 traceable back to a delivery ticket.
+
+The registry also prevents accidental scope drift. A legacy repository
+can contain many modules that are technically discoverable but not part
+of the current MVP. The operator interface only exposes the bounded
+contexts that have been classified as eligible migration work.
 
 ## Test-first Developer Loop
 
@@ -188,6 +214,10 @@ governance:
 - Humans retain authority over business-rule classification.
 - State transitions are deterministic and inspectable.
 - Parallel work can proceed without losing review control.
+- The team works from shared artifacts instead of individual prompt
+  sessions.
+- Bounded contexts keep migration scope understandable and reviewable.
+- Logs and audit records create a usable handoff trail.
 - Feedback becomes part of the workflow rather than an informal chat
   side-channel.
 

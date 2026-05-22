@@ -27,6 +27,17 @@ Use this path for a more serious screen:
 
 ## What To Look At By Role
 
+### Team-readiness Signal
+
+The AI Factory case study is meant to show more than agent usage. It
+shows how the work is structured so several people can operate it:
+bounded contexts, curated migration scope, ticket-linked runs, human
+approval gates, logs, audit trail, and a small set of allowed operator
+actions.
+
+That is the intended hiring signal: AI is treated as part of an
+engineering operating system, not as an unbounded code-generation tool.
+
 ### CTO / VP Engineering
 
 Look for architecture tradeoffs, modular platform direction, explicit
