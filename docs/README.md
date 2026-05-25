@@ -26,6 +26,8 @@ operating model behind a real modernization program:
 - AI-native delivery governance;
 - human-in-the-loop review;
 - AI Factory orchestration with deterministic validation gates;
+- AI Factory governance stack: cockpit, engine, CI/CD enforcement, and
+  onboarding doctrine;
 - modular platform modernization;
 - observability and delivery predictability.
 
