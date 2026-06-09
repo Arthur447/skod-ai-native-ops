@@ -47,6 +47,16 @@ governance that can scale beyond one maintainer.
 | [Runbooks](docs/runbooks/README.md) | Operational discipline for onboarding, release, observability, workers, and AI productivity. |
 | [ADRs](docs/adr/README.md) | Repository-scoped architecture decisions and governance records. |
 
+## Field Reports (REX)
+
+First-person field reports (in French) that tell the lived story behind the
+case studies — the decisions, the trade-offs, and the incident that changed how
+the system is built. See [`rex/`](rex/README.md):
+
+- [Une architecture agentique pensée pour l'échelle](rex/01-architecture-agentique-pensee-pour-l-echelle.md) — six mechanical guardrails for deploying AI agents on a real codebase without losing control.
+- [Une constitution morale parfaite ne vaut pas un verrou mécanique](rex/02-constitution-morale-vs-verrou-mecanique.md) — what an out-of-scope agent run taught me: a natural-language rule is not a lock.
+- [J'ai supprimé mon orchestrateur multi-agents. Le modèle le fait mieux que moi.](rex/03-orchestrateur-multi-agents-opus-4-8.md) — how Opus 4.8 made weeks of hand-built orchestration obsolete, and where it moved the real value.
+
 ## Operating Model
 
 The operating model is deliberately conservative:
